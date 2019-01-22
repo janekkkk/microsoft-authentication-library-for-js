@@ -22,9 +22,18 @@ export function loggerCallback(logLevel, message, piiEnabled) {
   console.log("client logging" + message);
 }
 
+// string[] SCOPES = { "https://{myB2CTenant}.onmicrosoft.com/b2capp2/note_read", "https://{myB2CTenant}.onmicrosoft.com/b2capp2/user_impersonation" };
 
-export const protectedResourceMap:[string, string[]][]=[ ['https://buildtodoservice.azurewebsites.net/api/todolist',['api://a88bb933-319c-41b5-9f04-eff36d985612/access_as_user']] , ['https://graph.microsoft.com/v1.0/me', ['user.read']] ];
+// export const protectedResourceMap:[string, string[]][]=[ ['https://buildtodoservice.azurewebsites.net/api/todolist',['api://a88bb933-319c-41b5-9f04-eff36d985612/access_as_user']] , ['https://graph.microsoft.com/v1.0/me', ['user.read']] ];
 
+const config = {
+  tenant: 'omons.b2clogin.com',
+  authority: 'omons.onmicrosoft.com',
+  clientID: '2219a808-668a-4cc5-a1e6-f75038e28e33',
+  policy: 'b2c_1_omonsprivate',
+}
+
+console.log(`https://${config.tenant}/tfp/${config.authority}/${config.policy}`)
 
 @NgModule({
   declarations: [
@@ -36,22 +45,22 @@ export const protectedResourceMap:[string, string[]][]=[ ['https://buildtodoserv
     HttpClientModule,
     RouterModule.forRoot(appRoutes,{useHash:true}) ,
     MsalModule.forRoot({
-        clientID: '6226576d-37e9-49eb-b201-ec1eeb0029b6',
-        authority: "https://login.microsoftonline.com/common/",
-        validateAuthority: true,
-        redirectUri: "http://localhost:4200/",
-        cacheLocation : "localStorage",
-        postLogoutRedirectUri: "http://localhost:4200/",
-        navigateToLoginRequestUrl: true,
-        popUp: false,
-        consentScopes: [ "user.read", "api://a88bb933-319c-41b5-9f04-eff36d985612/access_as_user"],
-        unprotectedResources: ["https://www.microsoft.com/en-us/"],
-        protectedResourceMap: protectedResourceMap,
-        logger: loggerCallback,
-        correlationId: '1234',
-        level: LogLevel.Info,
-        piiLoggingEnabled: true
-      }
+      clientID: '2219a808-668a-4cc5-a1e6-f75038e28e33',
+      authority: `https://${config.tenant}/tfp/${config.authority}/${config.policy}`,
+        validateAuthority: false,
+      //   redirectUri: "http://localhost:4200/",
+      //   cacheLocation : "localStorage",
+      //   postLogoutRedirectUri: "http://localhost:4200/",
+      //   navigateToLoginRequestUrl: true,
+      //   popUp: false,
+      // consentScopes: ["user.read", "user_impersonation"],
+      //   unprotectedResources: ["https://www.microsoft.com/en-us/"],
+      //   protectedResourceMap: null,
+      //   logger: loggerCallback,
+      //   correlationId: '1234',
+      //   level: LogLevel.Info,
+      //   piiLoggingEnabled: true,
+            }
     ),
   ],
   providers: [ProductService, TodoListService, HttpServiceHelper,
